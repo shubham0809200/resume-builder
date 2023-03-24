@@ -167,6 +167,8 @@ class HomeScreenListView extends HookViewModelWidget<HomeScreenViewModel> {
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
+            pinned: true,
             leading: const SizedBox(),
             actions: [
               IconButton(
@@ -174,7 +176,9 @@ class HomeScreenListView extends HookViewModelWidget<HomeScreenViewModel> {
                     viewModel.isAscending = !viewModel.isAscending;
                     viewModel.notifyListeners();
                   },
-                  icon: const Icon(Icons.arrow_upward))
+                  icon: viewModel.isAscending
+                      ? const Icon(Icons.arrow_upward)
+                      : const Icon(Icons.arrow_downward))
             ],
           ),
           SliverFillRemaining(

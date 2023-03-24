@@ -4,7 +4,7 @@ import 'package:resume_builder/services/firebase_user_service.dart';
 import 'package:stacked/stacked.dart';
 
 class SignupScreenViewModel extends BaseViewModel {
-  String title = "MyNews";
+  String title = "Signup";
 
   bool isLoading = false;
 

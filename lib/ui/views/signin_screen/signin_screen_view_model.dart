@@ -2,7 +2,7 @@ import 'package:resume_builder/services/firebase_auth_service.dart';
 import 'package:stacked/stacked.dart';
 
 class SigninScreenViewModel extends BaseViewModel {
-  String title = "MyNews";
+  String title = "Sgnin";
   bool isLoading = false;
 
   String _emailId = '';
