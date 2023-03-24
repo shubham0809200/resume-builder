@@ -1,6 +1,8 @@
 # Resume Builder
 
-This is a simple Resume Builder. It have various pages
+This is a simple Resume Builder. It have various pages with MVVM architecture. It can create a resume with various fields and can be downloaded as a pdf file.
+
+It have update and delete functionality. It can also change the order of the fields with the created date.
 
 - Splash Screen
 - Sign In
@@ -53,4 +55,3 @@ Thank you.
 <!-- video -->
 <video width="320" height="240" controls>
   <source src="./assets/app_pic/video.mp4" type="video/mp4">
-
