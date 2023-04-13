@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:resume_builder/models/resume.model.dart';
+import 'package:resume_builder/services/firebase_user_service.dart';
 
 class FirebaseResumeService {
   final CollectionReference _resumeCollection =
@@ -8,7 +9,13 @@ class FirebaseResumeService {
   // Get resumes
   Future<List<ResumeForm>> getResumes(bool ascending) async {
     try {
-      QuerySnapshot querySnapshot = await _resumeCollection.get();
+      // get user id
+      String userId = await FirebaseUserService().getUserId();
+
+      // get resumes by user id
+      QuerySnapshot querySnapshot =
+          await _resumeCollection.where('createdBy', isEqualTo: userId).get();
+
       List<ResumeForm> resumes = [];
       for (var doc in querySnapshot.docs) {
         resumes.add(ResumeForm.fromJson(doc.data() as Map<String, dynamic>));
@@ -19,12 +26,6 @@ class FirebaseResumeService {
         resumes.sort((a, b) => b.createdDate.compareTo(a.createdDate));
       }
       return resumes;
-      // QuerySnapshot querySnapshot = await _resumeCollection.get();
-      // List<ResumeForm> resumes = [];
-      // for (var doc in querySnapshot.docs) {
-      //   resumes.add(ResumeForm.fromJson(doc.data() as Map<String, dynamic>));
-      // }
-      // return resumes;
     } on FirebaseException catch (e) {
       print(e);
       rethrow;

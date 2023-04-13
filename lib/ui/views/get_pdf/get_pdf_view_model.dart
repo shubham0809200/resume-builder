@@ -23,20 +23,10 @@ class GetPdfViewModel extends BaseViewModel {
       pageFormat: PdfPageFormat.a4,
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       header: (pw.Context context) {
-        // if (context.pageNumber == 1) {
-        //   return null;
-        // }
         return pw.Container(
           alignment: pw.Alignment.centerRight,
           margin: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
           padding: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
-          // decoration: const pw.BoxDecoration(
-          //   border: pw.BoxBorder(
-          //     bottom: true,
-          //     width: 0.5,
-          //     color: PdfColors.grey,
-          //   ),
-          // ),
           child: pw.Text(
             'Resume Builder',
             style: pw.Theme.of(context)
@@ -63,218 +53,38 @@ class GetPdfViewModel extends BaseViewModel {
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: <pw.Widget>[
             // show name in bottom left
-            pw.Text(
-              resumeForm.name,
-              style: pw.TextStyle(
-                fontSize: 20,
-                fontWeight: pw.FontWeight.bold,
-              ),
-            ),
-
+            name(),
             // show address
-            pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.end,
-              children: <pw.Widget>[
-                pw.Text(
-                  resumeForm.email,
-                  style: pw.Theme.of(context)
-                      .defaultTextStyle
-                      .copyWith(color: PdfColors.grey),
-                ),
-                pw.Text(
-                  resumeForm.phone,
-                  style: pw.Theme.of(context)
-                      .defaultTextStyle
-                      .copyWith(color: PdfColors.grey),
-                ),
-                // show address divided in few lines
-                pw.SizedBox(
-                  height: 30,
-                  width: 200,
-                  child: pw.Text(
-                    resumeForm.address,
-                    textAlign: pw.TextAlign.right,
-                    style: pw.Theme.of(context)
-                        .defaultTextStyle
-                        .copyWith(color: PdfColors.grey),
-                  ),
-                ),
-              ],
-            ),
+            address(context),
           ],
         ),
         pw.SizedBox(height: 20),
-        pw.Header(
-          level: 0,
-          child: pw.Text(
-            'Objective',
-            style: pw.TextStyle(
-              fontSize: 20,
-              fontWeight: pw.FontWeight.bold,
-            ),
-          ),
+        // Objective
+        objectiveSummary(context),
+        seperator(),
+        pw.SizedBox(height: 10),
+
+        pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: <pw.Widget>[
+            // show education
+            if (resumeForm.educationList.isNotEmpty)
+              pw.Padding(
+                  padding: const pw.EdgeInsets.only(right: 5.0),
+                  child: education()),
+            if (resumeForm.skills.isNotEmpty) skills(),
+          ],
         ),
-        pw.Paragraph(
-          text: resumeForm.objective,
-          style: pw.Theme.of(context)
-              .defaultTextStyle
-              .copyWith(color: PdfColors.grey),
-        ),
-        if (resumeForm.educationList.isNotEmpty)
-          pw.Text(
-            'Education',
-            style: pw.TextStyle(
-              fontSize: 20,
-              fontWeight: pw.FontWeight.bold,
-            ),
-          ),
-        if (resumeForm.educationList.isNotEmpty)
-          pw.Table(
-              columnWidths: {
-                0: const pw.FlexColumnWidth(2),
-                1: const pw.FlexColumnWidth(2),
-                2: const pw.FlexColumnWidth(2),
-              },
-              tableWidth: pw.TableWidth.max,
-              border: pw.TableBorder.all(),
-              children: [
-                pw.TableRow(children: [
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(
-                      'Degree',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                    ),
-                  ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(
-                      'Institute',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                    ),
-                  ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(
-                      'Year',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                    ),
-                  ),
-                ]),
-              ]),
-        for (var i = 0; i < resumeForm.educationList.length; i++)
-          pw.Table(
-              columnWidths: {
-                0: const pw.FlexColumnWidth(2),
-                1: const pw.FlexColumnWidth(2),
-                2: const pw.FlexColumnWidth(2),
-              },
-              tableWidth: pw.TableWidth.max,
-              border: pw.TableBorder.all(),
-              children: [
-                pw.TableRow(children: [
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(resumeForm.educationList[i].degree),
-                  ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(resumeForm.educationList[i].institution),
-                  ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(resumeForm.educationList[i].graduationYear),
-                  ),
-                ]),
-              ]),
+
         pw.SizedBox(height: 20),
         if (resumeForm.experienceList.isNotEmpty)
-          pw.Text(
-            'Experience',
-            style: pw.TextStyle(
-              fontSize: 20,
-              fontWeight: pw.FontWeight.bold,
-            ),
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(top: 10.0),
+            child: experience(),
           ),
-        if (resumeForm.experienceList.isNotEmpty)
-          pw.Table(
-              columnWidths: {
-                0: const pw.FlexColumnWidth(2),
-                1: const pw.FlexColumnWidth(2),
-                2: const pw.FlexColumnWidth(2),
-              },
-              tableWidth: pw.TableWidth.max,
-              border: pw.TableBorder.all(),
-              children: [
-                pw.TableRow(children: [
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(
-                      'Company',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                    ),
-                  ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(
-                      'Position',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                    ),
-                  ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(
-                      'Year',
-                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                    ),
-                  ),
-                ]),
-              ]),
-        for (var i = 0; i < resumeForm.experienceList.length; i++)
-          pw.Table(
-              columnWidths: {
-                0: const pw.FlexColumnWidth(2),
-                1: const pw.FlexColumnWidth(2),
-                2: const pw.FlexColumnWidth(2),
-              },
-              tableWidth: pw.TableWidth.max,
-              border: pw.TableBorder.all(),
-              children: [
-                pw.TableRow(children: [
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(resumeForm.experienceList[i].companyName),
-                  ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(resumeForm.experienceList[i].jobTitle),
-                  ),
-                  pw.Container(
-                    padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text(
-                        '${resumeForm.experienceList[i].startDate} - ${resumeForm.experienceList[i].endDate}'),
-                  ),
-                ]),
-              ]),
+
         pw.SizedBox(height: 20),
-        if (resumeForm.skills.isNotEmpty)
-          pw.Text(
-            'Skills',
-            style: pw.TextStyle(
-              fontSize: 20,
-              fontWeight: pw.FontWeight.bold,
-            ),
-          ),
-        if (resumeForm.skills.isNotEmpty)
-          pw.Wrap(children: [
-            pw.Row(children: [
-              for (var i = 0; i < resumeForm.skills.length; i++)
-                pw.Container(
-                  padding: const pw.EdgeInsets.all(8),
-                  child: pw.Text(resumeForm.skills[i]),
-                ),
-            ]),
-          ]),
       ],
     ));
 
@@ -284,6 +94,173 @@ class GetPdfViewModel extends BaseViewModel {
     );
 
     return saveDocument(name: 'example.pdf', pdf: pdf);
+  }
+
+  pw.Container seperator() {
+    return pw.Container(
+      height: 1,
+      color: PdfColors.grey,
+    );
+  }
+
+  pw.Column skills() {
+    return pw.Column(
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Header(
+            level: 1,
+            child: pw.Text('Skills'),
+          ),
+          pw.SizedBox(height: 10),
+          for (var skill in resumeForm.skills)
+            pw.Text("* $skill",
+                textScaleFactor: 1.2,
+                textAlign: pw.TextAlign.left,
+                style: const pw.TextStyle(color: PdfColors.black)),
+        ]);
+  }
+
+  pw.Column education() {
+    return pw.Column(
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Header(
+            level: 1,
+            child: pw.Text('Education'),
+          ),
+          pw.SizedBox(height: 10),
+          for (var education in resumeForm.educationList)
+            pw.Padding(
+              padding: const pw.EdgeInsets.all(8),
+              child: pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Text(education.degree),
+                          pw.Text("- ${education.graduationYear}",
+                              textAlign: pw.TextAlign.right,
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  color: PdfColors.grey)),
+                        ]),
+                    pw.Row(children: [
+                      pw.Text(education.major),
+                      pw.Text('- ${education.institution}',
+                          style: const pw.TextStyle(color: PdfColors.grey)),
+                    ]),
+                    pw.Text(education.location),
+                  ]),
+            ),
+        ]);
+  }
+
+  pw.Column experience() {
+    return pw.Column(
+        mainAxisAlignment: pw.MainAxisAlignment.start,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.Header(
+            level: 1,
+            child: pw.Text('Experience'),
+          ),
+          pw.SizedBox(height: 10),
+          for (var experience in resumeForm.experienceList)
+            pw.Padding(
+              padding: const pw.EdgeInsets.all(8),
+              child: pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Text(experience.jobTitle),
+                          pw.Text(
+                              "- ${experience.startDate} - ${experience.endDate}",
+                              textAlign: pw.TextAlign.right,
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  color: PdfColors.grey)),
+                        ]),
+                    pw.Row(children: [
+                      pw.Text(experience.companyName),
+                      pw.Text('- ${experience.location}',
+                          style: const pw.TextStyle(color: PdfColors.grey)),
+                    ]),
+                    pw.Text(experience.description),
+                  ]),
+            ),
+        ]);
+  }
+
+  pw.Column objectiveSummary(pw.Context context) {
+    return pw.Column(children: [
+      pw.Header(
+        level: 0,
+        child: pw.Text(
+          'SUMMARY',
+          style: pw.TextStyle(
+            fontSize: 20,
+            fontWeight: pw.FontWeight.bold,
+          ),
+        ),
+      ),
+      pw.Paragraph(
+        text: resumeForm.objective,
+        style: pw.Theme.of(context)
+            .defaultTextStyle
+            .copyWith(color: PdfColors.grey),
+      ),
+    ]);
+  }
+
+  pw.Text name() {
+    return pw.Text(
+      resumeForm.name,
+      style: pw.TextStyle(
+        fontSize: 20,
+        fontWeight: pw.FontWeight.bold,
+      ),
+    );
+  }
+
+  pw.Column address(pw.Context context) {
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.end,
+      children: <pw.Widget>[
+        pw.Text(
+          resumeForm.email,
+          style: pw.Theme.of(context)
+              .defaultTextStyle
+              .copyWith(color: PdfColors.grey),
+        ),
+        pw.Text(
+          resumeForm.phone,
+          style: pw.Theme.of(context)
+              .defaultTextStyle
+              .copyWith(color: PdfColors.grey),
+        ),
+        // show address divided in few lines
+        pw.SizedBox(
+          height: 30,
+          width: 200,
+          child: pw.Text(
+            resumeForm.address,
+            textAlign: pw.TextAlign.right,
+            style: pw.Theme.of(context)
+                .defaultTextStyle
+                .copyWith(color: PdfColors.grey),
+          ),
+        ),
+      ],
+    );
   }
 
   Future<File> saveDocument({

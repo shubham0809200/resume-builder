@@ -3,6 +3,7 @@ class ResumeForm {
   late String name;
   late String email;
   late String phone;
+  late String createdBy;
   late String address;
   late String city;
   late String state;
@@ -19,6 +20,7 @@ class ResumeForm {
     required this.name,
     required this.email,
     required this.phone,
+    required this.createdBy,
     required this.address,
     required this.city,
     required this.state,
@@ -38,6 +40,7 @@ class ResumeForm {
       name: json['name'],
       email: json['email'],
       phone: json['phone'],
+      createdBy: json['createdBy'],
       address: json['address'],
       city: json['city'],
       state: json['state'],
@@ -62,6 +65,7 @@ class ResumeForm {
     data['name'] = name;
     data['email'] = email;
     data['phone'] = phone;
+    data['createdBy'] = createdBy;
     data['address'] = address;
     data['city'] = city;
     data['state'] = state;

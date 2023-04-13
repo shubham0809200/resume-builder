@@ -19,6 +19,7 @@ class ResumeScreenViewModel extends BaseViewModel {
     name: '',
     email: '',
     phone: '',
+    createdBy: '',
     address: '',
     city: '',
     state: '',

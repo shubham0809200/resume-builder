@@ -17,4 +17,24 @@ class FirebaseUserService {
       return e.message.toString();
     }
   }
+
+// get user
+  Future getUser() async {
+    try {
+      return await _userCollection.doc(FirebaseAuthService().user.uid).get();
+    } on FirebaseException catch (e) {
+      buildToaster(message: e.message.toString());
+      return e.message.toString();
+    }
+  }
+
+  // get userId
+  Future<String> getUserId() async {
+    try {
+      return FirebaseAuthService().user.uid;
+    } on FirebaseException catch (e) {
+      buildToaster(message: e.message.toString());
+      return e.message.toString();
+    }
+  }
 }
